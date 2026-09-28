@@ -36,3 +36,6 @@ The Login class contains the registration and login functionality. It validates 
 The LoginTest class is used to test the functionality of the Login class and determine whether the registration and login requirements are working correctly.
 
 The validation functionality makes use of Java's built-in classes and regular-expression capabilities (Oracle, 2026).
+## Project Requirements
+
+The application demonstrates Java programming concepts including user input, registration and login validation, conditional statements, methods, classes and unit testing.
