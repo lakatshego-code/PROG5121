@@ -1,30 +1,38 @@
 # PROG5121 Programming 1A — Part 1
 
-This project implements the Part 1 registration and login feature for the Programming 1A POE.
+## Project Information
 
-## Included
-- `Login.java` — validation, registration, authentication and login status methods.
-- `Main.java` — console application; no GUI/JOptionPane.
-- `LoginTest.java` — JUnit tests using the specified Part 1 test data.
-- `pom.xml` — Maven/JUnit configuration.
+This project was developed for the PROG5121 module.
+It demonstrates a Java-based registration and login system.
 
-## Run tests
-From the project folder:
+## Cellphone Number Validation
 
-```bash
-mvn test
-```
+The application uses a regular expression (regex) to validate the cellphone number entered by the user.
 
-## Required GitHub workflow
-The POE requires each part to have at least six commits. Suggested commits:
-1. Create Maven project structure
-2. Add Login class and username validation
-3. Add password validation and registration
-4. Add cell-phone regex validation
-5. Add login feature and console Main
-6. Add and pass JUnit tests
+Regex used:
 
-Push the project to GitHub after each meaningful stage rather than making six empty commits.
+^(\\+27|0)[6-8][0-9]{8}$
 
-## Important
-Replace any placeholder student details in your submission and record your own video presentation using your own voice as required by the POE.
+This regex allows South African cellphone numbers that:
+- Start with `0` or the international prefix `+27`
+- Use a valid mobile prefix from `6` to `8`
+- Contain the required number of digits
+- Reject numbers that do not follow the expected format
+
+Example of a valid number:
+0821234567
+
+Example using the international format:
++27821234567
+## Project Classes
+
+### Main.java
+The Main class controls the main flow of the QuickChat registration and login application. It collects information from the user and interacts with the Login class.
+
+### Login.java
+The Login class contains the registration and login functionality. It validates information such as the username, password and cellphone number before allowing the user to continue.
+
+### LoginTest.java
+The LoginTest class is used to test the functionality of the Login class and determine whether the registration and login requirements are working correctly.
+
+The validation functionality makes use of Java's built-in classes and regular-expression capabilities (Oracle, 2026).
