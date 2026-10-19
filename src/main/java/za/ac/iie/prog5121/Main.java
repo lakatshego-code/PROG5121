@@ -6,6 +6,8 @@ import java.util.Scanner;
 
 /** Console application for Programming 1A Parts 1 and 2. */
 public class Main {
+    private static int totalMessagesSent = 0;
+    private static int nextMessageNumber = 0;
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             Login login = new Login();
@@ -82,17 +84,18 @@ public class Main {
                 String recipient = scanner.nextLine().trim();
                 System.out.print("Enter message (maximum 250 characters): ");
                 String text = scanner.nextLine();
-                message = new Message(i, recipient, text);
+                message = new Message(nextMessageNumber, recipient, text);
                 if (!message.isRecipientValid()) {
                     System.out.println("Invalid recipient number. Please enter a valid phone number.");
                     continue;
                 }
                 if (!message.isMessageLengthValid()) {
-                    System.out.println("Please enter a message of no more than 250 characters.");
+                    System.out.println("Please enter a message of less than 250 characters.");
                     continue;
                 }
                 break;
             }
+            nextMessageNumber++;
             System.out.println("Message ID generated: " + message.getMessageID());
             System.out.println("Message Hash: " + message.getMessageHash());
            
@@ -116,13 +119,14 @@ if (choice.equals("2")) {
     System.out.println(result);
 
     if ("Sent".equals(message.getStatus())) {
+        totalMessagesSent++;
         System.out.println(message.printMessages());
         sentMessages.add(message);
     }
 }
 
         }
-        int total = sentMessages.isEmpty() ? 0 : sentMessages.get(sentMessages.size() - 1).returnTotalMessagess();
+        int total = totalMessagesSent;
         System.out.println("Total messages sent: " + total);
     }
 }
