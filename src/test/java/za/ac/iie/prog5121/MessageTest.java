@@ -45,20 +45,35 @@ class MessageTest {
         assertEquals("00:0:HITONIGHT", message.createMessageHash());
     }
 
-    @Test
-    void sendDisregardAndStoreChoicesReturnRequiredMessages() throws Exception {
-        Message sent = new Message("0012345678", 0, "08575975889", "Hi tonight");
-        assertEquals("Message successfully sent", sent.SentMessage("1"));
-        assertEquals("Press 0 to delete the message", new Message(1, "08575975889", "Discard me").SentMessage("2"));
-        Path storedPath = Path.of("messages.json");
-        try {
-            assertEquals("Message successfully stored", new Message(2, "08575975889", "Store me").SentMessage("3"));
-            assertTrue(Files.exists(storedPath));
-            assertTrue(Files.readString(storedPath).contains("Store me"));
-        } finally {
-            Files.deleteIfExists(storedPath);
+      
+@Test
+void sendDisregardAndStoreChoicesReturnRequiredMessages() throws Exception {
+    Message sent = new Message("0012345678", 0, "08575975889", "Hi tonight");
+    assertEquals("Message successfully sent", sent.SentMessage("1"));
+
+    Message discarded = new Message(1, "08575975889", "Discard me");
+    assertEquals("Press 0 to delete the message", discarded.SentMessage("2"));
+
+    Path storedPath = Files.createTempFile("quickchat-test-", ".json");
+    Files.deleteIfExists(storedPath);
+    String previousStorageFile = System.getProperty("quickchat.storage.file");
+
+    try {
+        System.setProperty("quickchat.storage.file", storedPath.toString());
+
+        Message stored = new Message(2, "08575975889", "Store me");
+        assertEquals("Message successfully stored", stored.SentMessage("3"));
+        assertTrue(Files.exists(storedPath));
+        assertTrue(Files.readString(storedPath).contains("Store me"));
+    } finally {
+        if (previousStorageFile == null) {
+            System.clearProperty("quickchat.storage.file");
+        } else {
+            System.setProperty("quickchat.storage.file", previousStorageFile);
         }
+        Files.deleteIfExists(storedPath);
     }
+}
 
     @Test
     void totalCountsOnlySentMessages() {

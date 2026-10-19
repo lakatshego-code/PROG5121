@@ -12,6 +12,7 @@ import java.util.Locale;
 public class Message {
     private static final SecureRandom RANDOM = new SecureRandom();
     private static int totalMessagesSent = 0;
+    private static final String DEFAULT_STORAGE_FILE = "messages.json";
 
     private final String messageID;
     private final int messageNumber;
@@ -130,7 +131,7 @@ public String createMessageHash() {
 
     /** Stores this message as JSON in messages.json in the working directory. */
     public void storeMessage() throws IOException {
-        Path path = Path.of("messages.json");
+        Path path = Path.of(System.getProperty("quickchat.storage.file", DEFAULT_STORAGE_FILE));
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         MessageRecord record = new MessageRecord(messageID, messageNumber, recipient,
                 messageText, messageHash, "Stored");
