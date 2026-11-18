@@ -147,4 +147,50 @@ class TaskTest {
         assertTrue(report.contains("Recipient: +27838884567"));
         assertTrue(report.contains("Message: Report test message"));
     }
+
+    @Test
+    void testAllFiveRequiredPoeMessagesAndArrays() throws Exception {
+        Message first = new Message("1111111111", 0,
+                "+27834557896", "Did you get the cake?");
+        first.SentMessage("1");
+        task.addMessage(first);
+
+        Message second = new Message("2222222222", 1,
+                "+27838884567",
+                "Where are you? You are late! I have asked you to be on time.");
+        second.SentMessage("3");
+        task.addMessage(second);
+
+        Message third = new Message("3333333333", 2,
+                "+27834484567", "Yohoooo, I am at your gate.");
+        third.SentMessage("2");
+        task.addMessage(third);
+
+        Message fourth = new Message("0838884567", 3,
+                "0838884567", "It is dinner time!");
+        fourth.SentMessage("1");
+        task.addMessage(fourth);
+
+        Message fifth = new Message("5555555555", 4,
+                "+27838884567", "Ok, I am leaving without you.");
+        fifth.SentMessage("3");
+        task.addMessage(fifth);
+
+        task.loadStoredMessages();
+
+        assertEquals(2, task.getSentMessages().length);
+        assertEquals(1, task.getDisregardedMessages().length);
+        assertEquals(2, task.getStoredMessages().length);
+        assertEquals(5, task.getMessageIDs().length);
+        assertEquals(5, task.getMessageHashes().length);
+
+        assertEquals("Did you get the cake?",
+                task.getSentMessages()[0].getMessageText());
+
+        assertEquals("It is dinner time!",
+                task.searchMessageByID("0838884567").getMessageText());
+
+        assertTrue(task.searchMessagesByRecipient("+27838884567")
+                .contains("Where are you?"));
+    }
 }
